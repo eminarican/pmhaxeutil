@@ -11,20 +11,16 @@ fn main() {
     match app::subcommand(&matches) {
         Subcommand::Build => {
         }
-        Subcommand::Init => {
-            if let Err(_) = fs::create_dir("./plugin") {
+        Subcommand::Init { name, path, version } => {
+            if let Err(_) = fs::create_dir(format!("./{}", name).as_str()) {
                 println!("Directory already exists!");
                 exit(1)
             }
-            if let Err(_) = fs::create_dir_all("./plugin/src/pmhaxe") {
-                println!("Couldn't create src directory!");
-                exit(1)
-            }
-            if let Err(_) = util::create_plugin_manifest() {
+            if let Err(_) = util::create_plugin_manifest(name, path, version) {
                 println!("Couldn't create plugin manifest!");
                 exit(1)
             }
-            if let Err(_) = util::create_plugin_main() {
+            if let Err(_) = util::create_plugin_main(name, path) {
                 println!("Couldn't create plugin main");
                 exit(1)
             }
