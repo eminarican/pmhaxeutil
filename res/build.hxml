@@ -1,0 +1,7 @@
+-cp src
+pmhaxe.Main
+
+--library pmhaxe
+--library phpnatives
+
+--php out/src
