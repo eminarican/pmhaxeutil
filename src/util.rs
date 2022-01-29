@@ -5,6 +5,11 @@ use std::io::Write;
 pub fn create_plugin_manifest(name: &str, path: Option<&str>, version: Option<&str>) -> Result<(), ()> {
     let data = include_bytes!("../res/plugin.json");
 
+    if let Err(_) = fs::create_dir(format!("./{}", name).as_str()) {
+        println!("Directory already exists!");
+        return Err(())
+    }
+
     let mut manifest = String::from(std::str::from_utf8(data).unwrap());
     manifest = manifest.replace("HaxePlugin", name);
 
@@ -16,7 +21,7 @@ pub fn create_plugin_manifest(name: &str, path: Option<&str>, version: Option<&s
         manifest = manifest.replace("0.0.1", version);
     }
 
-    return create_file(format!("./{}/plugin.json", name).as_str(), manifest.as_bytes())
+    return create_file(format!("./{}/plugin.json", name), manifest.as_bytes())
 }
 
 pub fn create_plugin_main(name: &str, path: Option<&str>) -> Result<(), ()> {
@@ -27,14 +32,14 @@ pub fn create_plugin_main(name: &str, path: Option<&str>) -> Result<(), ()> {
         namespace = path.replace(".", "/")
     }
 
-    if let Err(_) = fs::create_dir_all(format!("./{}/src/{}", name, namespace).as_str()) {
+    if let Err(_) = fs::create_dir_all(format!("./{}/src/{}", name, namespace)) {
         return Err(())
     }
 
-    return create_file(format!("./{}/src/{}/Main.hx", name, namespace).as_str(), data)
+    return create_file(format!("./{}/src/{}/Main.hx", name, namespace), data)
 }
 
-fn create_file(path: &str, buff: &[u8]) -> Result<(), ()> {
+fn create_file(path: String, buff: &[u8]) -> Result<(), ()> {
     if let Ok(mut file) = fs::File::create(path) {
         if let Ok(_) = file.write_all(buff) {
             return Ok(())

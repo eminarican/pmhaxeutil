@@ -1,10 +1,10 @@
 mod app;
 mod util;
 
-use std::process::exit;
-use std::fs;
-
 use app::Subcommand;
+
+use std::process::exit;
+
 
 fn main() {
     let matches = app::new();
@@ -12,10 +12,6 @@ fn main() {
         Subcommand::Build => {
         }
         Subcommand::Init { name, path, version } => {
-            if let Err(_) = fs::create_dir(format!("./{}", name).as_str()) {
-                println!("Directory already exists!");
-                exit(1)
-            }
             if let Err(_) = util::create_plugin_manifest(name, path, version) {
                 println!("Couldn't create plugin manifest!");
                 exit(1)
