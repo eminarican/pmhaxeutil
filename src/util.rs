@@ -55,7 +55,7 @@ pub fn create_custom_manifest(name: &str, path: Option<&str>, version: Option<&s
 
 pub fn create_plugin_manifest(manifest: PocketmineManifest) -> Result<(), ()> {
     let data = serde_yaml::to_string(&manifest).unwrap();
-    return create_file(String::from("{}/out/plugin.yml"), data.as_bytes())
+    return create_file(String::from("/out/plugin.yml"), data.as_bytes())
 }
 
 pub fn create_plugin_build_info(name: &str, path: Option<&str>) -> Result<(), ()> {
