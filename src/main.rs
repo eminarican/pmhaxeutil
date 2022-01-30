@@ -25,44 +25,43 @@ fn main() {
 
 fn subcommand_build() {
     if File::open("./build.hxml").is_err() {
-        println!("Build file doesn't exist!");
-        exit(1)
+        exit_error("Build file doesn't exist!")
     }
+
     if Command::new("haxe").arg("./build.hxml").status().is_err() {
-        println!("There's a problem with build file or project!");
-        exit(1)
+        exit_error("There's a problem with build file or project!")
     }
+
     if let Some(manifest) = util::get_custom_manifest() {
         let manifest = manifest.to_pocketmine();
         if util::create_plugin_manifest(manifest).is_err() {
-            println!("Couldn't create plugin manifest!");
-            exit(1)
+            exit_error("Couldn't create plugin manifest!")
         }
     } else {
-        println!("Plugin manifest doesn't exist!");
-        exit(1)
+        exit_error("Plugin manifest doesn't exist!")
     }
+
     if util::pack_plugin().is_err() {
-        println!("Couldn't pack plugin!");
-        exit(1)
+        exit_error("Couldn't pack plugin!")
     }
-    println!("Project builded!")
+    
+    exit_success("Project builded!")
 }
 
 fn subcommand_init(name: String, path: Option<String>, version: Option<String>) {
     if util::create_custom_manifest(name, path, version).is_err() {
-        println!("Couldn't create plugin manifest!");
-        exit(1)
+        exit_error("Couldn't create plugin manifest!")
     }
+
     if util::create_plugin_build_info(name, path).is_err() {
-        println!("Couldn't create plugin build files");
-        exit(1)
+        exit_error("Couldn't create plugin build files")
     }
+
     if util::create_plugin_main(name, path).is_err() {
-        println!("Couldn't create plugin main");
-        exit(1)
+        exit_error("Couldn't create plugin main")
     }
-    println!("Project {} is initialized!", name)
+    
+    exit_success("Project is initialized!")
 }
 
 fn exit_success(message: &str) {
