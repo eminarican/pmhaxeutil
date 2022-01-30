@@ -53,9 +53,9 @@ pub fn create_custom_manifest(name: &str, path: Option<&str>, version: Option<&s
     return create_file(format!("./{}/plugin.json", name), manifest.as_bytes())
 }
 
-pub fn create_plugin_manifest(path: &str, manifest: PocketmineManifest) -> Result<(), ()> {
+pub fn create_plugin_manifest(manifest: PocketmineManifest) -> Result<(), ()> {
     let data = serde_yaml::to_string(&manifest).unwrap();
-    return create_file(format!("{}/out/plugin.yml", path), data.as_bytes())
+    return create_file(String::from("{}/out/plugin.yml"), data.as_bytes())
 }
 
 pub fn create_plugin_build_info(name: &str, path: Option<&str>) -> Result<(), ()> {
@@ -87,8 +87,8 @@ pub fn create_plugin_main(name: &str, path: Option<&str>) -> Result<(), ()> {
     return create_file(format!("./{}/src/{}/Main.hx", name, namespace), main.as_bytes())
 }
 
-pub fn get_custom_manifest(path: &str) -> Option<CustomManifest> {
-    if let Some(mut data) = get_file(format!("{}/plugin.json", path)) {
+pub fn get_custom_manifest() -> Option<CustomManifest> {
+    if let Some(mut data) = get_file(String::from("plugin.json")) {
         if let Ok(manifest) = serde_json::from_str::<CustomManifest>(&mut data) {
             return Some(manifest)
         }
