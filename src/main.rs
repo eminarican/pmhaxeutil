@@ -32,7 +32,7 @@ fn subcommand_build() {
         exit_error("There's a problem with build file or project!")
     }
 
-    if let Some(manifest) = util::get_custom_manifest() {
+    /*if let Some(manifest) = util::get_custom_manifest() {
         let manifest = manifest.to_pocketmine();
         if util::create_plugin_manifest(manifest).is_err() {
             exit_error("Couldn't create plugin manifest!")
@@ -43,13 +43,13 @@ fn subcommand_build() {
 
     if util::pack_plugin().is_err() {
         exit_error("Couldn't pack plugin!")
-    }
+    }*/
     
     exit_success("Project builded!")
 }
 
 fn subcommand_init(name: String, path: Option<String>, version: Option<String>) {
-    if util::create_custom_manifest(name, path, version).is_err() {
+    /*if util::create_custom_manifest(name, path, version).is_err() {
         exit_error("Couldn't create plugin manifest!")
     }
 
@@ -59,7 +59,7 @@ fn subcommand_init(name: String, path: Option<String>, version: Option<String>) 
 
     if util::create_plugin_main(name, path).is_err() {
         exit_error("Couldn't create plugin main")
-    }
+    }*/
     
     exit_success("Project is initialized!")
 }
