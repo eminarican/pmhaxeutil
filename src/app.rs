@@ -1,5 +1,4 @@
 use clap::{App, Arg, ArgMatches};
-use std::process::exit;
 
 pub fn new() -> ArgMatches {
     App::new("Pmhaxe")
@@ -10,17 +9,17 @@ pub fn new() -> ArgMatches {
         )
         .subcommand(App::new("init")
             .about("Creates project")
-            .arg(Arg::new("name")
+            .arg(Arg::new("n")
                 .value_name("name")
                 .required(true)
                 .short('n')
             )
-            .arg(Arg::new("path")
+            .arg(Arg::new("p")
                 .value_name("path")
                 .required(false)
                 .short('p')
             )
-            .arg(Arg::new("version")
+            .arg(Arg::new("v")
                 .value_name("version")
                 .required(false)
                 .short('v')
@@ -29,34 +28,42 @@ pub fn new() -> ArgMatches {
         .get_matches()
 }
 
-pub enum Subcommand<'a> {
+pub enum Subcommand {
     Build,
     Init {
-        name: &'a str,
-        path: Option<&'a str>,
-        version: Option<&'a str>
+        name: String,
+        path: Option<String>,
+        version: Option<String>
     }
 }
 
-pub fn subcommand(matches: &ArgMatches) -> Subcommand {
-    return if let Some(_) = matches.subcommand_matches("build") {
-        Subcommand::Build
-    } else if let Some(matches) = matches.subcommand_matches("init") {
-        Subcommand::Init {
-            name: matches.value_of("name").unwrap(),
-            path: if let Some(path) = matches.value_of("path") {
-                Some(path)
-            } else {
-                None
-            },
-            version: if let Some(version) = matches.value_of("version") {
-                Some(version)
-            } else {
-                None
-            }
+pub fn subcommand(matches: &ArgMatches) -> Option<Subcommand> {
+    if matches.subcommand_matches("build").is_some() {
+        return Some(Subcommand::Build)
+    }
+
+    if let Some(matches) = matches.subcommand_matches("init") {
+        return Some(Subcommand::Init {
+            name: get_argument(matches, "name"),
+            path: get_optional_argument(matches, "path"),
+            version: get_optional_argument(matches, "version")
+        })
+    }
+
+    None
+}
+
+fn get_argument(matches: &ArgMatches, value: &str) -> String {
+    matches.value_of("name").unwrap().to_string()
+}
+
+fn get_optional_argument(matches: &ArgMatches, value: &str) -> Option<String> {
+    return match matches.value_of("name") {
+        Some(arg) => {
+            Some(String::from(arg))
+        },
+        None => {
+            None
         }
-    } else {
-        println!("Please use --help flag for gathering more info");
-        exit(0)
     }
 }

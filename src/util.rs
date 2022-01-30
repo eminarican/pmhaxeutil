@@ -2,6 +2,7 @@ use std::fs;
 use std::str;
 use std::io::{ Write, Read };
 
+use phar::{Compression, Signature};
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -55,7 +56,7 @@ pub fn create_custom_manifest(name: &str, path: Option<&str>, version: Option<&s
 
 pub fn create_plugin_manifest(manifest: PocketmineManifest) -> Result<(), ()> {
     let data = serde_yaml::to_string(&manifest).unwrap();
-    return create_file(String::from("/out/plugin.yml"), data.as_bytes())
+    return create_file(String::from("./out/plugin.yml"), data.as_bytes())
 }
 
 pub fn create_plugin_build_info(name: &str, path: Option<&str>) -> Result<(), ()> {
@@ -94,6 +95,23 @@ pub fn get_custom_manifest() -> Option<CustomManifest> {
         }
     }
     None
+}
+
+pub fn pack_plugin() -> std::io::Result<()> {
+    let mut file = fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open("Plugin.phar")?;
+    
+    let phar = phar::create(&mut file, Signature::sha512())
+        .stub(&b"<?php "[..])?
+        .metadata(&b""[..])?;
+    
+    let res = phar.build_from_directory(std::path::Path::new("./out"), Compression::None);
+    println!("{:?}", res);
+    return res
 }
 
 fn create_file(path: String, buff: &[u8]) -> Result<(), ()> {
