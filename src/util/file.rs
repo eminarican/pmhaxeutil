@@ -1,4 +1,4 @@
-use std::fs::{File, OpenOptions, remove_dir_all};
+use std::fs::{File, OpenOptions, remove_dir_all, remove_file};
 use std::io::{Read, Write};
 
 use super::Result;
@@ -47,4 +47,8 @@ pub fn write(path: String, data: String) -> Result {
 
 pub fn delete_folder(path: String) -> Result {
     super::to_result(remove_dir_all(path))
+}
+
+pub fn delete_file(path: String) -> Result {
+    super::to_result(remove_file(path))
 }

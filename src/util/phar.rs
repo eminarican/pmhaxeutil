@@ -6,8 +6,7 @@ pub fn pack() -> Result {
     if super::file::write(String::from("package.php"), String::from(std::str::from_utf8(data).unwrap())).is_err() {
         return Err()
     }
-    if Command::new("php").arg(String::from("package.php")).status().is_err() {
-        return Err()
-    }
-    Ok()
+    let result = Command::new("php").arg(String::from("package.php")).status();
+    let _ = super::file::delete_file(String::from("package.php"));
+    super::to_result(result)
 }
