@@ -14,8 +14,7 @@ pub fn start() -> ResultError {
 }
 
 pub fn clean() -> Result {
-    println!("Cleaning build files!");
-    super::file::delete_folder(String::from("/out"))
+    super::file::delete_folder(String::from("out"))
 }
 
 fn compile() -> ResultError {

@@ -30,16 +30,17 @@ fn subcommand_build() {
     }
 
     if util::phar::pack().is_err() {
-        if util::build::clean().is_err() {
-            println!("Cleaning build files failed!")
-        }
         exit_error(String::from("Couldn't pack plugin!"))
+    }
+
+    if util::build::clean().is_err() {
+        println!("Cleaning build files failed!")
     }
     
     exit_success(String::from("Project builded!"))
 }
 
-fn subcommand_init(name: String, path: Option<String>, version: Option<String>) {
+fn subcommand_init(_name: String, _path: Option<String>, _version: Option<String>) {
     /*if util::create_custom_manifest(name, path, version).is_err() {
         exit_error("Couldn't create plugin manifest!")
     }
