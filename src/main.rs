@@ -29,8 +29,14 @@ fn subcommand_build() {
         exit_error(message)
     }
 
-    if util::phar::pack().is_err() {
-        exit_error(String::from("Couldn't pack plugin!"))
+    if let Err(message) = util::phar::start() {
+        if util::build::clean().is_err() {
+            println!("Cleaning build files failed!")
+        }
+        if util::phar::clean().is_err() {
+            println!("Cleaning packing tools failed!")
+        }
+        exit_error(message)
     }
 
     if util::build::clean().is_err() {
@@ -45,7 +51,7 @@ fn subcommand_init(name: String, path: Option<String>, version: Option<String>) 
     let manifest = util::manifest::CustomManifest::new(name, path, version);
 
     if let Err(message) = util::init::start(manifest) {
-        if util::file::delete_folder(folder).is_err() {
+        if util::file::delete_folder(folder).is_err() { 
             println!("Cleaning init files failed!")
         }
         exit_error(message)

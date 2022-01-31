@@ -14,7 +14,8 @@ pub fn start() -> ResultError {
 }
 
 pub fn clean() -> Result {
-    super::file::delete_folder(String::from("out"))
+    Ok()
+    //super::file::delete_folder(String::from("out"))
 }
 
 fn compile() -> ResultError {

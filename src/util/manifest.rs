@@ -62,6 +62,10 @@ impl CustomManifest {
         self.get_namespace_fs() + "/Main.hx"
     }
 
+    pub fn get_main_php(&self) -> String {
+        self.get_namespace_php() + "\\lib\\Main"
+    }
+
     pub fn to_string(&self) -> String {
         serde_json::to_string_pretty(self).unwrap()
     }
@@ -70,7 +74,7 @@ impl CustomManifest {
         PocketmineManifest {
             api: String::from("4.0.0"),
             name: self.name.clone(),
-            main: String::from("lib\\") + self.get_namespace_php().as_str(),
+            main: self.get_main_php(),
             version: self.ver.clone()
         }
     }

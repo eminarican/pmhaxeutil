@@ -45,6 +45,13 @@ pub fn write(path: String, data: String) -> Result {
     }
 }
 
+pub fn write_bytes(path: String, data: &[u8]) -> Result {
+    match get(path, true, true) {
+        Some(mut file) => super::to_result(file.write_all(data)),
+        None => super::Err()
+    }
+}
+
 pub fn create_folder(path: String) -> Result {
     super::to_result(create_dir_all(path))
 }
