@@ -35,7 +35,7 @@ impl CustomManifest {
         PocketmineManifest {
             api: String::from("4.0.0"),
             name: self.name,
-            main: self.main.replace(".", "\\"),
+            main: String::from("lib\\") + self.main.replace(".", "\\").as_str(),
             version: self.ver
         }
     }

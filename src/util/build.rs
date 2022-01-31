@@ -21,7 +21,7 @@ pub fn clean() -> Result {
 fn compile() -> ResultError {
     use std::process::Command;
 
-    if super::file::get(String::from("./build.hxml")).is_none() {
+    if !super::file::exists(String::from("./build.hxml")) {
         return Err(String::from("Build file doesn't exist!"))
     }
 
