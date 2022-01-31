@@ -39,6 +39,9 @@ fn subcommand_build() {
         exit_error(message)
     }
 
+    if util::phar::clean().is_err() {
+        println!("Cleaning build files failed!")
+    }
     if util::build::clean().is_err() {
         println!("Cleaning build files failed!")
     }

@@ -62,8 +62,8 @@ impl CustomManifest {
         self.get_namespace_fs() + "/Main.hx"
     }
 
-    pub fn get_main_php(&self) -> String {
-        self.get_namespace_php() + "\\lib\\Main"
+    pub fn get_main_php_namespace(&self) -> String {
+        self.get_namespace_php() + "\\Main"
     }
 
     pub fn to_string(&self) -> String {
@@ -74,7 +74,7 @@ impl CustomManifest {
         PocketmineManifest {
             api: String::from("4.0.0"),
             name: self.name.clone(),
-            main: self.get_main_php(),
+            main: self.get_main_php_namespace(),
             version: self.ver.clone()
         }
     }

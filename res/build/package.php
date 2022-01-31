@@ -5,6 +5,9 @@ function main() {
         exitError("Phar is readonly, set phar.readonly to 0 with -dphar.readonly=0!");
     }
 
+    rename("out/src/lib", "build/src");
+    rename("build/src", "out/src");
+
     // Todo: read plugin.yml
     package("Plugin.phar", [
         "name" => "HaxePlugin",

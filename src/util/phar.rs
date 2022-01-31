@@ -54,6 +54,5 @@ pub fn pack() -> ResultError {
 }
 
 pub fn clean() -> Result {
-    Ok()
-    //super::file::delete_folder(String::from("build"))
+    super::file::delete_folder(String::from("build"))
 }
