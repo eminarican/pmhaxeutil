@@ -40,18 +40,16 @@ fn subcommand_build() {
     exit_success(String::from("Project builded!"))
 }
 
-fn subcommand_init(_name: String, _path: Option<String>, _version: Option<String>) {
-    /*if util::create_custom_manifest(name, path, version).is_err() {
-        exit_error("Couldn't create plugin manifest!")
-    }
+fn subcommand_init(name: String, path: Option<String>, version: Option<String>) {
+    let folder = name.clone();
+    let manifest = util::manifest::CustomManifest::new(name, path, version);
 
-    if util::create_plugin_build_info(name, path).is_err() {
-        exit_error("Couldn't create plugin build files")
+    if let Err(message) = util::init::start(manifest) {
+        if util::file::delete_folder(folder).is_err() {
+            println!("Cleaning init files failed!")
+        }
+        exit_error(message)
     }
-
-    if util::create_plugin_main(name, path).is_err() {
-        exit_error("Couldn't create plugin main")
-    }*/
     
     exit_success(String::from("Project is initialized!"))
 }

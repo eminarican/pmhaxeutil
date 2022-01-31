@@ -44,9 +44,9 @@ pub fn subcommand(matches: &ArgMatches) -> Option<Subcommand> {
 
     if let Some(matches) = matches.subcommand_matches("init") {
         return Some(Subcommand::Init {
-            name: get_argument(matches, "name"),
-            path: get_optional_argument(matches, "path"),
-            version: get_optional_argument(matches, "version")
+            name: get_argument(matches, "n"),
+            path: get_optional_argument(matches, "p"),
+            version: get_optional_argument(matches, "v")
         })
     }
 

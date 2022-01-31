@@ -1,4 +1,4 @@
-use std::fs::{File, OpenOptions, remove_dir_all, remove_file};
+use std::fs::{File, OpenOptions, create_dir_all, remove_dir_all, remove_file};
 use std::io::{Read, Write};
 
 use super::Result;
@@ -43,6 +43,10 @@ pub fn write(path: String, data: String) -> Result {
         Some(mut file) => super::to_result(file.write_all(&data.as_bytes())),
         None => super::Err()
     }
+}
+
+pub fn create_folder(path: String) -> Result {
+    super::to_result(create_dir_all(path))
 }
 
 pub fn delete_folder(path: String) -> Result {
