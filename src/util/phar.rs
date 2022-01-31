@@ -6,7 +6,7 @@ pub fn pack() -> Result {
     if super::file::write(String::from("package.php"), String::from(std::str::from_utf8(data).unwrap())).is_err() {
         return Err()
     }
-    if Command::new("php").arg(super::file::path(String::from("package.php"))).status().is_err() {
+    if Command::new("php").arg(String::from("package.php")).status().is_err() {
         return Err()
     }
     Ok()

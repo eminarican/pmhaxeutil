@@ -48,8 +48,3 @@ pub fn write(path: String, data: String) -> Result {
 pub fn delete_folder(path: String) -> Result {
     super::to_result(remove_dir_all(path))
 }
-
-pub fn path(path: String) -> String {
-    let srcdir = std::path::PathBuf::from(path);
-    String::from(std::fs::canonicalize(&srcdir).unwrap().to_str().unwrap())
-}
