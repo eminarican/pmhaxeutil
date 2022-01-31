@@ -54,11 +54,11 @@ pub fn subcommand(matches: &ArgMatches) -> Option<Subcommand> {
 }
 
 fn get_argument(matches: &ArgMatches, value: &str) -> String {
-    matches.value_of("name").unwrap().to_string()
+    matches.value_of(value).unwrap().to_string()
 }
 
 fn get_optional_argument(matches: &ArgMatches, value: &str) -> Option<String> {
-    return match matches.value_of("name") {
+    return match matches.value_of(value) {
         Some(arg) => {
             Some(String::from(arg))
         },

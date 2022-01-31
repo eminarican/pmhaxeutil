@@ -3,15 +3,13 @@ mod util;
 
 use app::Subcommand;
 
-use std::fs::File;
 use std::process::exit;
-use std::process::Command;
 
 fn main() {
     let matches = app::new();
     let subcommand = if let Some(subcommand) = app::subcommand(&matches) 
     {subcommand} else {
-        exit_error("Please use --help flag for gathering more info")
+        exit_error(String::from("Please use --help flag for gathering more info"))
     };
 
     match subcommand {
@@ -24,28 +22,21 @@ fn main() {
 }
 
 fn subcommand_build() {
-    if File::open("./build.hxml").is_err() {
-        exit_error("Build file doesn't exist!")
-    }
-
-    if Command::new("haxe").arg("./build.hxml").status().is_err() {
-        exit_error("There's a problem with build file or project!")
-    }
-
-    /*if let Some(manifest) = util::get_custom_manifest() {
-        let manifest = manifest.to_pocketmine();
-        if util::create_plugin_manifest(manifest).is_err() {
-            exit_error("Couldn't create plugin manifest!")
+    if let Err(message) = util::build::start() {
+        if util::build::clean().is_err() {
+            println!("Cleaning build files failed!")
         }
-    } else {
-        exit_error("Plugin manifest doesn't exist!")
+        exit_error(message)
     }
 
-    if util::pack_plugin().is_err() {
-        exit_error("Couldn't pack plugin!")
-    }*/
+    if util::phar::pack().is_err() {
+        if util::build::clean().is_err() {
+            println!("Cleaning build files failed!")
+        }
+        exit_error(String::from("Couldn't pack plugin!"))
+    }
     
-    exit_success("Project builded!")
+    exit_success(String::from("Project builded!"))
 }
 
 fn subcommand_init(name: String, path: Option<String>, version: Option<String>) {
@@ -61,15 +52,15 @@ fn subcommand_init(name: String, path: Option<String>, version: Option<String>) 
         exit_error("Couldn't create plugin main")
     }*/
     
-    exit_success("Project is initialized!")
+    exit_success(String::from("Project is initialized!"))
 }
 
-fn exit_success(message: &str) {
+fn exit_success(message: String) {
     println!("{}", message);
     exit(0)
 }
 
-fn exit_error(message: &str) -> ! {
+fn exit_error(message: String) -> ! {
     println!("{}", message);
     exit(1)
 }
