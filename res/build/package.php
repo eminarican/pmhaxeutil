@@ -9,17 +9,7 @@ function main() {
     rename("build/src", "out/src");
 
     // Todo: read plugin.yml
-    package("Plugin.phar", [
-        "name" => "HaxePlugin",
-        "version" => "0.0.1",
-        "main" => "lib\\pmhaxe\\Main",
-        "api" => ["4.0.0"],
-        "depend" => [],
-        "description" => "",
-        "authors" => [],
-        "website" => "",
-        "creationDate" => time()
-    ], "out");
+    package("Plugin.phar", [], "out");
 }
 
 function package(string $name, array $metadata, string $from) {

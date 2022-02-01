@@ -54,5 +54,6 @@ pub fn pack() -> ResultError {
 }
 
 pub fn clean() -> Result {
+    let _ = super::file::delete_file(String::from(".php-cs-fixer.cache"));
     super::file::delete_folder(String::from("build"))
 }
