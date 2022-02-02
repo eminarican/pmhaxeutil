@@ -42,9 +42,19 @@ pub fn copy_utils() -> ResultError {
 }
 
 pub fn fix() -> ResultError {
-    let result = Command::new("php").args(vec!["./build/fixer.phar", "fix", "--allow-risky=yes", "--rules", "phpdoc_to_return_type,phpdoc_to_param_type",  "out"]).status();
-    let _ = super::file::delete_file(String::from("package.php"));
-    super::to_result_err(super::to_result(result), String::from("Couldn't fix plugin!"))
+    return match super::file::read(String::from("plugin.json")) {
+        None => Err(String::from("Plugin manifest doesn't exist")),
+        Some(data) => {
+            let result_pm = Command::new("php").args(vec!["./build/fixer.phar", "fix", "--allow-risky=yes", "--rules", "phpdoc_to_return_type,phpdoc_to_param_type",  "out/src/lib/pocketmine"]).status();
+            let result_pl = Command::new("php").args(vec!["./build/fixer.phar", "fix", "--allow-risky=yes", "--rules", "phpdoc_to_return_type,phpdoc_to_param_type",  format!("out/src/lib/{}", super::manifest::CustomManifest::from_string(data).get_namespace_fs()).as_str()]).status();
+            if result_pm.is_ok() {
+                let _ = super::file::delete_file(String::from("package.php"));
+                super::to_result_err(super::to_result(result_pl), String::from("Couldn't fix plugin!"))
+            } else {
+                Err(String::from("Couldn't fix plugin!"))
+            }
+        }
+    }
 }
 
 pub fn pack() -> ResultError {
