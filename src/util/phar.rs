@@ -2,43 +2,38 @@ use super::{Ok, Result, ResultError};
 use std::process::Command;
 
 pub fn start() -> ResultError {
-    if let Err(message) = create_folder() {
-        return Err(message)
+    return if let Err(message) = create_folder() {
+        Err(message)
+    } else if let Err(message) = copy_utils() {
+        Err(message)
+    } else if let Err(message) = fix() {
+        Err(message)
+    } else if let Err(message) = pack() {
+        Err(message)
+    } else {
+        Ok()
     }
-
-    if let Err(message) = copy_utils() {
-        return Err(message)
-    }
-
-    if let Err(message) = fix() {
-        return Err(message)
-    }
-
-    if let Err(message) = pack() {
-        return Err(message)
-    }
-    Ok()
 }
 
 pub fn create_folder() -> ResultError {
-    if super::file::create_folder(String::from("build")).is_err() {
-        return Err(String::from("Couldn't create build folder!"))
+    return if super::file::create_folder(String::from("build")).is_err() {
+        Err(String::from("Couldn't create build folder!"))
+    } else {
+        Ok()
     }
-    Ok()
 }
 
 pub fn copy_utils() -> ResultError {
     let packager = include_bytes!("../../res/build/package.php");
     let fixer = include_bytes!("../../res/build/fixer.phar");
 
-    if super::file::write(String::from("build/package.php"), String::from(std::str::from_utf8(packager).unwrap())).is_err() {
-        return Err(String::from("couldn't copy packaging util!"))
+    return if super::file::write(String::from("build/package.php"), String::from(std::str::from_utf8(packager).unwrap())).is_err() {
+        Err(String::from("couldn't copy packaging util!"))
+    } else if super::file::write_bytes(String::from("build/fixer.phar"), fixer).is_err() {
+        Err(String::from("couldn't copy fixing util!"))
+    } else {
+        Ok()
     }
-
-    if super::file::write_bytes(String::from("build/fixer.phar"), fixer).is_err() {
-        return Err(String::from("couldn't copy fixing util!"))
-    }
-    Ok()
 }
 
 pub fn fix() -> ResultError {

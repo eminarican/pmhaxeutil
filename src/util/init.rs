@@ -2,19 +2,15 @@ use super::ResultError;
 use super::Ok;
 
 pub fn start(manifest: super::manifest::CustomManifest) -> ResultError {
-    if let Err(message) = create_build_info(&manifest) {
-        return Err(message)
+    return if let Err(message) = create_build_info(&manifest) {
+        Err(message)
+    } else if let Err(message) = create_manifest(&manifest) {
+        Err(message)
+    } else if let Err(message) = create_main(&manifest) {
+        Err(message)
+    } else {
+        Ok()
     }
-
-    if let Err(message) = create_manifest(&manifest) {
-        return Err(message)
-    }
-
-    if let Err(message) = create_main(&manifest) {
-        return Err(message)
-    }
-
-    Ok()
 }
 
 fn create_build_info(manifest: &super::manifest::CustomManifest) -> ResultError {

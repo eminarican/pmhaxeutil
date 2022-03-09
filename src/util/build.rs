@@ -2,15 +2,13 @@ use super::{Result, ResultError};
 use super::Ok;
 
 pub fn start() -> ResultError {
-    if let Err(message) = compile() {
-        return Err(message)
+    return if let Err(message) = compile() {
+        Err(message)
+    } else if let Err(message) = copy_manifest() {
+        Err(message)
+    } else {
+        Ok()
     }
-
-    if let Err(message) = copy_manifest() {
-        return Err(message)
-    }
-
-    Ok()
 }
 
 pub fn clean() -> Result {

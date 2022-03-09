@@ -30,19 +30,13 @@ fn subcommand_build() {
     }
 
     if let Err(message) = util::phar::start() {
-        if util::build::clean().is_err() {
+        if util::build::clean().is_err() || util::phar::clean().is_err() {
             println!("Cleaning build files failed!")
-        }
-        if util::phar::clean().is_err() {
-            println!("Cleaning packing tools failed!")
         }
         exit_error(message)
     }
 
-    if util::phar::clean().is_err() {
-        println!("Cleaning build files failed!")
-    }
-    if util::build::clean().is_err() {
+    if util::build::clean().is_err() || util::phar::clean().is_err() {
         println!("Cleaning build files failed!")
     }
     
