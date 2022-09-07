@@ -7,5 +7,5 @@ commands:
 todo:
   - output custom location
   - resource copy
-  - virions
   - readme
+  - virions
